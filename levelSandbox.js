@@ -24,6 +24,7 @@ function addLevelDBData(key,value){
 
 // Get data from levelDB with key
 function getLevelDBData(key){
+  console.log("key == " + key);
   return new Promise(function(resolve, reject) {
       db.get(key, function(err, value) {
         if (err) {
@@ -40,30 +41,28 @@ function getBlocksCount() {
   return new Promise((resolve, reject) => {
       let height = -1;
 
-      db.createReadStream().on('data', (data) => {
-        height++;
-      }).on('error', (error) => {
-        reject(error)
-      }).on('close', (t) => {
+      db.createReadStream()
+      .on('data', function() {
+        height++;})
+      .on('error', (error) => {
+        reject(error)})
+      .on('close', () => {
         resolve(height)
       })
+  })
+}
+
+function printChain() {
+  return new Promise((resolve, reject) => {
+      db.createReadStream()
+      .on('data', function(block) {
+        console.log("herehere");
+        console.log(JSON.stringify(block))})
+      .on('error', (error) => {
+        console.log("Error there was a problem with a block.");
     })
-      // console.log("here2");
-      //   return new Promise(function(resolve, reject){
-      //     let count = 0;
-      //     db.createReadStream()
-      //     .on('data', function (data) {
-      //       count++;
-      //       console.log("count++ = " + count);
-      //     })
-      //     .on('error', function (err) {
-      //       reject(err);
-      //     })
-      //     .on('close', function () {
-      //       resolve(count);
-      //     });
-      //   });
-      }
+  })
+}
 
 // Add data to levelDB with value
 function addDataToLevelDB(value) {
@@ -98,4 +97,6 @@ module.exports.addDataToLevelDB = addDataToLevelDB;
 module.exports.getBlocksCount = getBlocksCount;
 module.exports.getLevelDBData = getLevelDBData;
 module.exports.addLevelDBData = addLevelDBData;
+module.exports.printChain = printChain;
+
 

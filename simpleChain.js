@@ -3,16 +3,16 @@
 |  =========================================================*/
 const levelSB = require('./levelSandbox.js');
 const SHA256 = require('crypto-js/sha256');
-const level = require('level');
-const chainDB = './chaindata';
-const db = level(chainDB);
+//const level = require('level');
+//const chainDB = './chaindata';
+//const db = level(chainDB);
 
 /* ===== Block Class ==============================
-|  Class with a constructor for block 			   |
+|  Class with a constructor for block          |
 |  ===============================================*/
 
 class Block{
-	constructor(data){
+  constructor(data){
      this.hash = "",
      this.height = 0,
      this.body = data,
@@ -22,7 +22,7 @@ class Block{
 }
 
 /* ===== Blockchain Class ==========================
-|  Class with a constructor for new blockchain 		|
+|  Class with a constructor for new blockchain    |
 |  ================================================*/
 
 class Blockchain {
@@ -56,18 +56,19 @@ class Blockchain {
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
     console.log("block hash = " + newBlock.hash);
     // Adding block object to chain
-  	await levelSB.addLevelDBData(newBlock.height, newBlock);
+    await levelSB.addLevelDBData(newBlock.height, newBlock);
   }
 
   // Get block height
   async getBlockHeight(){
-    console.log("here1");
+    //console.log("here1");
     return await levelSB.getBlocksCount();
   }
 
   // get block
   async getBlock(blockHeight){
-    let tempBlock = await levelSB.getLevelDBData(blockHeight);
+    console.log("blockHeight = " + blockHeight);
+    const tempBlock = await levelSB.getLevelDBData(blockHeight);
     return tempBlock; 
 
     // return object as a single string
@@ -93,6 +94,10 @@ class Blockchain {
           console.log('Block #'+blockHeight+' invalid hash:\n'+blockHash+'<>'+validBlockHash);
           resolve(false);
         }
+    }
+
+    async printBlocks() {
+      await levelSB.printChain();
     }
 
    //Validate blockchain
@@ -135,20 +140,25 @@ class Blockchain {
 
     }
 }
-let bc = new Blockchain();
-async function fill() {
-  
-let blockTest = new Block("Test Block - 1");
-bc.addBlock(blockTest);
-let blockTest2 = new Block("Test Block - 2");
-bc.addBlock(blockTest2);
-let blockTest3 = new Block("Test Block - 3");
-bc.addBlock(blockTest3);
+
+
+
+async function addBlocksForTesting() {
+  //let bc = new Blockchain();
+  let blockTest = new Block("Test Block - 1");
+  await bc.addBlock(blockTest);
+  //let blockTest2 = new Block("Test Block - 2");
+  //await bc.addBlock(blockTest2);
+  //let blockTest3 = new Block("Test Block - 3");
+  //await bc.addBlock(blockTest3);
+  bc.printBlocks();
+  const te = await bc.getBlock(0);
+  console.log(te);
 }
 
-fill();
-//let a = bc.getBlockHeight().th;
-//console.log("final count = " + a);
+let bc = new Blockchain();
+
+addBlocksForTesting();
 
 //bc.addBlock(new Block('Test data 1'))
 //  .then(console.log("success"));
