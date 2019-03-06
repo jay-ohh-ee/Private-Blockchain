@@ -59,3 +59,14 @@ for (var i = 0; i < inducedErrorBlocks.length; i++) {
 ```
 blockchain.validateChain();
 ```
+
+## Server Testing
+
+```
+Run: node app.js
+```
+
+This will begin the server that runs on port 8000 of your computer.
+Using Postman you can test both the GET (localhost:8000/block/{block height}) and POST (localhost:8000/block) endpoints.
+
+Note that with the POST method there needs to be a string entered in the body of the request associated with a key titled 'data'.  If this is not included then you will get an error returned notifying you of this issue.

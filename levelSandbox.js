@@ -23,6 +23,7 @@ function addLevelDBData(key,value){
 
 // Get data from levelDB with key
 function getLevelDBData(key){
+  console.log(`key = ${key}`)
   return new Promise((resolve, reject) => {
       db.get(key, function(err, value) {
         if (err) {

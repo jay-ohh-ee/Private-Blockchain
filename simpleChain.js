@@ -63,7 +63,7 @@ class Blockchain {
   async getBlock(blockHeight){
     //console.log("blockHeight = " + blockHeight);
     const tempBlock = JSON.parse(await levelSB.getLevelDBData(blockHeight));
-    //console.log(tempBlock);
+    console.log(tempBlock);
     return tempBlock; 
 
   }
@@ -131,18 +131,20 @@ class Blockchain {
     }
 }
 
-let bc = new Blockchain();
+// let bc = new Blockchain();
 
 
-    (function theLoop (i) {
-      setTimeout(function () {
-        let blockTest = new Block("Test Block - " + (i + 1));
-        bc.addBlock(blockTest).then((result) => {
-            i++;
-            if (i < 10) theLoop(i);
-        });
-      }, 1000);
-    })(0);
+//     (function theLoop (i) {
+//       setTimeout(function () {
+//         let blockTest = new Block("Test Block - " + (i + 1));
+//         bc.addBlock(blockTest).then((result) => {
+//             i++;
+//             if (i < 10) theLoop(i);
+//         });
+//       }, 1000);
+//     })(0);
+
+module.exports = Blockchain; 
 
 
 
