@@ -62,11 +62,48 @@ blockchain.validateChain();
 
 ## Server Testing
 
+
+The node.js framework that was chosen for creating API endpoints was Express.js.  The base url that this server is configured to run on is http://localhost:8000.  
 ```
-Run: node app.js
+To start the server run the command - node app.js
 ```
 
-This will begin the server that runs on port 8000 of your computer.
-Using Postman you can test both the GET (localhost:8000/block/{block height}) and POST (localhost:8000/block) endpoints.
+## API Endpoints
 
-Note that with the POST method there needs to be a string entered in the body of the request associated with a key titled 'data'.  If this is not included then you will get an error returned notifying you of this issue.
+There are two endpoints that can be used.  Given that this is to simulate a blockchain there are only two endpoints, a GET and a POST.  Blockchains are not to be altered other than appending blocks to the chain.
+
+## GET Endpoint
+
+```
+http://localhost:8000/block/{block number}
+```
+
+To test the GET endpoint go to postman and select GET.  Enter the following url, where the data at the very end is the block that you whish to retrieve.  If this block doesn't exist you will see the corresponding HTTP Error code.
+
+
+
+## POST Endpoint
+
+```
+http://localhost:8000/block
+
+```
+
+To test the POST endpoint go to postman and select POST.  Enter the following url, and then click the Body tab below.  After clicking on body you have two options. Either click on the tab that says x-www-form-urlencoded or click on Text and then select JSON (application/json) from the dropdown.  Note this server is set up to only parse the request body when it is in urlencoded data or JSON.  This is because of the middleware that is being used.
+
+
+If you chose x-www-form-urlencoded enter your data in the following way. 
+```
+Key -> data
+Value -> This is a test block.
+```
+
+If you chose JSON (application/json) enter you data in the following way.
+
+```
+{"data" : "what ever you want the data to be"}
+```
+
+ If this block doesn't exist you will see the corresponding HTTP Error code otherwise you will see the data of the block you just entered.
+
+

@@ -46,6 +46,7 @@ class BlockController {
             const data = req.body.data;
             if(data == "" || data == undefined) {
                 res.status(400).send("Bad Request: Fill in the body.");
+                return;
             }
             try {
                 let block = new Block(data);
@@ -53,6 +54,7 @@ class BlockController {
                 let chainHeight = await bc.getBlockHeight();
                 let newestBlock = await bc.getBlock(chainHeight);
                 res.status(200).send(newestBlock);
+                return;
             // Most likely not needed if testing has already been done on the BC.  
             // Only here as a precaution but will remove later.
             } catch(err) {
